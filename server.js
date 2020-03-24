@@ -1,20 +1,27 @@
 const express = require("express");
 const app = express();
-
+const cors = require("cors");
 const PORT = process.env.PORT || 5000;
+const path = require("path");
 
 // Connect Mongo DB
 require("./config/db")();
 
 // Parse form body
+app.use(cors());
+app.use(express.static("client/build"));
 app.use(express.json({ extended: false }));
-app.get("/", (req, res) => {
-  return res.send("welcome to my api");
-});
 
+// ROUTES
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/contacts", require("./routes/contacts"));
+
+// render react app page
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
+
 app.listen(PORT, () => {
-  console.log(`Server started on 5000`);
+  console.log(`Server started on ${PORT}`);
 });

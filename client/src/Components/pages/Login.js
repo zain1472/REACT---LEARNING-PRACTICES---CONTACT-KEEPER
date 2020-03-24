@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-const Login = () => {
+import AlertContext from "../../context/alert/AlertContext";
+import AuthContext from "../../context/auth/AuthContext";
+const Login = props => {
+  const { setAlert } = useContext(AlertContext);
+  const { error, loginUser, isAuthenticated } = useContext(AuthContext);
+  useEffect(() => {
+    if (error) {
+      setAlert(error, "danger");
+    }
+    if (isAuthenticated) {
+      props.history.push("/");
+      setAlert("You have been logged in successfully", "success");
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
   const [user, setUser] = useState({
-    name: "",
     email: "",
-    password: "",
-    password2: ""
+    password: ""
   });
   const onChange = e => {
     setUser({
@@ -15,6 +27,8 @@ const Login = () => {
   };
   const onSubmit = e => {
     e.preventDefault();
+    setAlert("Attempting to log you in...", "primary");
+    loginUser({ email, password });
   };
   const { email, password } = user;
   return (
@@ -28,8 +42,8 @@ const Login = () => {
           <input
             type="email"
             name="email"
-            id=""
             value={email}
+            required
             onChange={onChange}
           />
         </div>
@@ -38,7 +52,7 @@ const Login = () => {
           <input
             type="password"
             name="password"
-            id=""
+            minLength="6"
             value={password}
             onChange={onChange}
           />

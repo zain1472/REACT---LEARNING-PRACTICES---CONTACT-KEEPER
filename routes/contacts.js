@@ -4,7 +4,7 @@ const Contact = require("../models/Contact");
 const auth = require("../middleware/auth");
 
 // @route Get /api/contacts/
-// @desc get a logged in user
+// @desc get all contacts
 // @access private
 router.get("/", auth, async (req, res) => {
   try {
@@ -34,20 +34,38 @@ router.post(
       contact.type = type;
     }
     await contact.save();
-    res.json({ msg: "Contact created successfully" });
+    res.json({ msg: "Contact created successfully", contact });
   }
 );
 
 // @route PUT /api/contacts/:id
 // @desc edit a contact
 // @access private
-router.put("/:id", (req, res) => {});
+router.put("/:id", (req, res) => {
+  console.log("object");
+  const contact = req.body;
+  Contact.findByIdAndUpdate(req.params.id, contact, function(err, con) {
+    if (err) {
+      console.log(err);
+      res.status(400).json({ msg: "Cannot Update the contact" });
+    } else {
+      res.json({ msg: "The contact has been updated successfully" });
+    }
+  });
+});
 
 // @route DELETE /api/contacts/:id
 // @desc delete a contact
 // @access private
 router.delete("/:id", (req, res) => {
-  return res.send("delete a contact");
+  Contact.findByIdAndDelete(req.params.id, function(err, con) {
+    if (err) {
+      console.log(err);
+      res.status(400).json({ msg: "Cannot delete the contact" });
+    } else {
+      res.json({ msg: "The contact has been deleted successfully" });
+    }
+  });
 });
 
 module.exports = router;

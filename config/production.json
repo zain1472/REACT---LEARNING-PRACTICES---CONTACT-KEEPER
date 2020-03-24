@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://react:react@cluster0-mokd2.mongodb.net/test?retryWrites=true&w=majority",
+  "secret": "secret"
+}
