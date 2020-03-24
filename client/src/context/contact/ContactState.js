@@ -40,6 +40,7 @@ const ContactState = props => {
         "Application-Type": "application/json"
       }
     };
+    setAuthToken();
     try {
       const res = await axios.post("/api/contacts", contact, config);
       dispatch({ type: ADD_CONTACT, payload: res.data.contact });
@@ -50,6 +51,7 @@ const ContactState = props => {
     }
   };
   const deleteContact = async id => {
+    setAuthToken();
     try {
       const res = await axios.delete(`/api/contacts/${id}`);
       setMessage("success", res.data.msg);

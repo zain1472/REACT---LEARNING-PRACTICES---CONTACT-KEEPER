@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
+
 const PORT = process.env.PORT || 5000;
 const path = require("path");
 
@@ -8,7 +8,7 @@ const path = require("path");
 require("./config/db")();
 
 // Parse form body
-app.use(cors());
+
 app.use(express.static("client/build"));
 app.use(express.json({ extended: false }));
 
