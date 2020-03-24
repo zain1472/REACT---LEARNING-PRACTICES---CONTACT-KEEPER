@@ -40,7 +40,7 @@ const ContactState = props => {
         "Application-Type": "application/json"
       }
     };
-    setAuthToken();
+    setAuthToken(localStorage.token);
     try {
       const res = await axios.post("/api/contacts", contact, config);
       dispatch({ type: ADD_CONTACT, payload: res.data.contact });
@@ -51,7 +51,7 @@ const ContactState = props => {
     }
   };
   const deleteContact = async id => {
-    setAuthToken();
+    setAuthToken(localStorage.token);
     try {
       const res = await axios.delete(`/api/contacts/${id}`);
       setMessage("success", res.data.msg);
@@ -73,7 +73,7 @@ const ContactState = props => {
     dispatch({ type: CLEAR_FILTER });
   };
   const updateContact = async contact => {
-    setAuthToken();
+    setAuthToken(localStorage.token);
     const config = {
       headers: {
         "Applicatin-Type": "application/json"
